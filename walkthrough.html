@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OtoLog Tour</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 共通定義 --- */
+        :root { --primary: #007AFF; --text-main: #1d1d1f; --text-sub: #86868b; --radius: 16px; }
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif; margin: 0; padding: 0;
+            height: 100dvh; background: #fff; color: var(--text-main);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        /* スライドエリア */
+        .slider-container {
+            flex: 1; position: relative; overflow: hidden;
+        }
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            padding: 40px 24px; box-sizing: border-box;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* 滑らかなアニメーション */
+        }
+
+        /* ビジュアル（画像）エリア */
+        .visual-placeholder {
+            width: 260px; height: 260px;
+            background: #F5F5F7; border-radius: 24px; margin-bottom: 32px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 80px;
+        }
+        /* 画像を使う場合は imgタグにこのクラスを当てる */
+        .visual-img {
+            width: 260px; height: 260px; object-fit: contain; margin-bottom: 32px;
+        }
+
+        /* テキスト */
+        .step-label { color: var(--primary); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+        h2 { font-size: 24px; font-weight: 800; margin: 0 0 16px; letter-spacing: -0.5px; }
+        p { font-size: 15px; line-height: 1.7; color: var(--text-sub); margin: 0; max-width: 320px; }
+
+        /* 下部コントロールエリア（固定配置） */
+        .controls {
+            padding: 24px; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            background: #fff; /* 背景を透過させない */
+        }
+
+        /* ページネーション */
+        .dots { display: flex; gap: 8px; margin-bottom: 24px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #E5E5EA; transition: 0.3s; }
+        .dot.active { background: var(--primary); width: 24px; border-radius: 4px; }
+
+        /* ボタン */
+        .btn {
+            width: 100%; max-width: 340px; padding: 16px;
+            border-radius: var(--radius); font-weight: 700; font-size: 15px;
+            text-align: center; cursor: pointer; transition: 0.1s;
+            border: none; text-decoration: none; display: flex; justify-content: center;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: var(--text-main); color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="slider-container">
+        
+        <div class="slide" style="transform: translateX(0%);">
+            <div class="visual-placeholder">🎧</div>
+            <div class="step-label">Concept</div>
+            <h2>音でつながる、<br>新しい感性共有。</h2>
+            <p>何気ない日常の音を記録し、シェアしよう。言葉にしにくいその瞬間の「気持ち」も、アイコンなら直感的に伝えられます。</p>
+        </div>
+
+        <div class="slide" style="transform: translateX(100%);">
+            <div class="visual-placeholder">🎙️</div>
+            <div class="step-label">Step 1</div>
+            <h2>日常を切り取る</h2>
+            <p>録音は10秒から。お題があるから、何を撮るか迷いません。今の感情を選んで、気軽に投稿しましょう。</p>
+        </div>
+
+        <div class="slide" style="transform: translateX(200%);">
+            <div class="visual-placeholder">🤔</div>
+            <div class="step-label">Step 2</div>
+            <h2>音だけで想像する</h2>
+            <p>投稿のタイトルは隠されています。先入観なしに「音」だけを聴いて、どんな気持ちだったか推測してみましょう。</p>
+        </div>
+
+        <div class="slide" style="transform: translateX(300%);">
+            <div class="visual-placeholder">💡</div>
+            <div class="step-label">Step 3</div>
+            <h2>ズレを楽しむ</h2>
+            <p>リアクションして初めて「正解」がわかります。予想通りなら「共鳴」、違っていたら「発見」。その感覚のズレがきっかけになります。</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="dots">
+            <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div id="nextBtn" class="btn btn-primary">次へ</div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const nextBtn = document.getElementById('nextBtn');
+        const totalSlides = slides.length;
+
+        // ボタンクリック時の動作
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlider();
+            } else {
+                // 最後のスライドでボタンを押したらダウンロードページへ移動
+                window.location.href = 'download.html';
+            }
+        });
+
+        // スライドとドットの状態を更新する関数
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                // 各スライドの位置を計算して移動
+                slide.style.transform = `translateX(${(index - currentSlide) * 100}%)`;
+            });
+
+            // ドットの表示更新
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+
+            // 最後のスライドならボタンの文字を変える
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.innerText = "OtoLog をはじめる";
+            } else {
+                nextBtn.innerText = "次へ";
+            }
+        }
+    </script>
+</body>
+</html>
