@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
     <style>
         @keyframes pageFadeIn {
-    0% { opacity: 0; transform: scale(0.98); filter: blur(10px); }
-    100% { opacity: 1; transform: scale(1); filter: blur(0); }
-}
+            0% { opacity: 0; transform: scale(0.98); filter: blur(10px); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0); }
+        }
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif; margin: 0; padding: 0;
             height: 100dvh; width: 100%; overflow: hidden;
@@ -20,7 +20,10 @@
         }
 
         .top-content {
-            position: absolute; top: 12%; width: 100%;
+            position: absolute; 
+            /* 12% -> 8% に変更して少し上に */
+            top: 8%; 
+            width: 100%;
             display: flex; flex-direction: column; align-items: center;
         }
         .icon-small {
@@ -32,42 +35,44 @@
 
         /* 中央カード */
         .card-wrapper {
-            position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%);
+            position: absolute; 
+            /* 48% -> 42% に変更してカード全体を上に逃がす */
+            top: 42%; 
+            left: 50%; transform: translate(-50%, -50%);
             width: 100%; max-width: 340px; padding: 0 24px; box-sizing: border-box;
         }
         .id-card {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px); border-radius: 20px;
-            padding: 24px; text-align: center;
+            padding: 20px; /* パディングを少し減らす */
+            text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
         .id-label { font-size: 10px; font-weight: 700; color: #86868b; margin-bottom: 8px; }
         .id-value {
-            font-size: 38px; font-weight: 800; color: #007AFF; margin-bottom: 4px; line-height: 1;
+            font-size: 34px; /* 文字サイズを少し縮小 */
+            font-weight: 800; color: #007AFF; margin-bottom: 4px; line-height: 1;
         }
-        .copy-hint { font-size: 11px; color: #86868b; margin-bottom: 20px; display: block; }
+        .copy-hint { font-size: 11px; color: #86868b; margin-bottom: 15px; display: block; }
 
-        /* 入力場所の説明図 */
         .input-guide {
-            border-top: 1px dashed #ddd; padding-top: 15px; margin-top: 10px;
+            border-top: 1px dashed #ddd; padding-top: 10px; margin-top: 5px;
         }
-        .guide-text { font-size: 11px; color: #333; margin-bottom: 8px; font-weight: bold; }
+        .guide-text { font-size: 11px; color: #333; margin-bottom: 5px; font-weight: bold; }
         
-        /* CSSでログイン画面を再現 */
         .mock-phone {
-            width: 140px; background: #E0F2F1; border-radius: 10px; padding: 12px 10px;
-            margin: 0 auto; display: flex; flex-direction: column; gap: 6px; position: relative;
+            width: 140px; background: #E0F2F1; border-radius: 10px; padding: 8px 10px;
+            margin: 0 auto; display: flex; flex-direction: column; gap: 5px; position: relative;
         }
-        .mock-title { height: 8px; width: 60%; background: #00acc1; margin: 0 auto 4px; border-radius: 4px; opacity: 0.5; }
-        .mock-input { height: 16px; background: white; border-radius: 4px; border: 1px solid #ddd; }
-        .mock-input.target { border: 2px solid #007AFF; background: #eef6ff; } /* 強調 */
+        .mock-title { height: 6px; width: 60%; background: #00acc1; margin: 0 auto 2px; border-radius: 4px; opacity: 0.5; }
+        .mock-input { height: 14px; background: white; border-radius: 4px; border: 1px solid #ddd; }
+        .mock-input.target { border: 2px solid #007AFF; background: #eef6ff; }
         .pointer {
-            position: absolute; right: -25px; bottom: 15px; font-size: 24px;
+            position: absolute; right: -25px; bottom: 10px; font-size: 20px;
             animation: point 1s infinite alternate;
         }
         @keyframes point { from { transform: translateX(0); } to { transform: translateX(-5px); } }
 
-        /* ボタンエリア（index.htmlと位置合わせ） */
         .bottom-area {
             position: absolute; bottom: 40px; left: 0; width: 100%;
             padding: 0 24px; box-sizing: border-box;
@@ -82,7 +87,6 @@
         .btn-text { color: #007AFF; font-size: 13px; height: 40px; }
         .badge { background: #ff3b30; font-size: 10px; padding: 2px 6px; border-radius: 4px; color: white; margin-left: 6px; }
         
-        /* トースト */
         .toast {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
             background: rgba(0,0,0,0.8); color: white; padding: 8px 16px; border-radius: 30px;
