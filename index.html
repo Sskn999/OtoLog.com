@@ -6,102 +6,90 @@
     <title>OtoLog</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 共通設定 --- */
+        @keyframes pageFadeIn {
+    0% { opacity: 0; transform: scale(0.98); filter: blur(10px); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
         :root {
             --primary: #1d1d1f;
             --text-main: #1d1d1f;
             --text-sub: #86868b;
-            --glass-bg: rgba(255, 255, 255, 0.4); /* 背景画像の上の薄い白 */
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --blur: 20px;
         }
-        
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif;
             margin: 0; padding: 0;
-            height: 100dvh; width: 100%;
-            overflow: hidden;
-            /* ★★★ 背景画像の設定 ★★★ */
-            background-image: url('bg.jpg'); /* ここに背景画像を指定 */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            height: 100dvh; width: 100%; overflow: hidden;
+            background-image: url('bg.jpg'); /* 背景画像 */
+            background-size: cover; background-position: center; background-repeat: no-repeat;
             color: var(--text-main);
-            display: flex; flex-direction: column; align-items: center;
+            position: relative; /* 子要素の絶対配置の基準 */
+            animation: pageFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* コンテンツ全体を中央揃え＆幅制限 */
-        .container {
-            width: 100%; max-width: 400px; height: 100%;
-            padding: 0 24px; box-sizing: border-box;
-            display: flex; flex-direction: column;
-            justify-content: space-between; /* 上下均等配置 */
-        }
-
-        /* 上部エリア（位置固定用） */
-        .header-section {
-            padding-top: 120px; /* ★ここでアイコン位置を全ページ統一 */
+        /* --- 上部コンテンツ（アイコン・タイトル） --- */
+        .top-content {
+            position: absolute;
+            top: 15%; /* 画面の15%の位置に固定 */
+            width: 100%;
             text-align: center;
             display: flex; flex-direction: column; align-items: center;
         }
 
         .hero-icon {
-            width: 90px; height: 90px;
-            border-radius: 22px;
+            width: 90px; height: 90px; border-radius: 22px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             margin-bottom: 24px; object-fit: cover;
         }
 
-        h1 {
-            font-size: 32px; font-weight: 800; margin: 0 0 8px;
-            letter-spacing: -0.5px;
-        }
-        .subtitle {
-            font-size: 14px; color: var(--text-sub); font-weight: 500;
-        }
+        h1 { font-size: 32px; font-weight: 800; margin: 0 0 8px; letter-spacing: -0.5px; }
+        .subtitle { font-size: 14px; color: var(--text-sub); font-weight: 500; }
 
-        /* 下部エリア（ボタン群） */
-        .bottom-section {
-            padding-bottom: 50px; /* 下からの余白 */
-            width: 100%;
+        /* --- 下部アクションエリア（位置固定） --- */
+        .bottom-area {
+            position: absolute;
+            bottom: 40px; /* 画面下からの距離 */
+            left: 0; width: 100%;
+            padding: 0 24px; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center;
         }
 
         .btn {
             display: flex; justify-content: center; align-items: center;
-            width: 100%; height: 56px;
-            border-radius: 16px;
+            width: 100%; max-width: 400px;
+            height: 56px; border-radius: 16px;
             text-decoration: none; font-weight: 700; font-size: 15px;
-            transition: 0.1s; margin-bottom: 12px;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: 0.1s;
         }
         .btn:active { transform: scale(0.98); }
 
         .btn-primary {
             background: #1d1d1f; color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 12px; /* 下のボタンとの隙間 */
         }
+        
         .btn-text {
-            background: rgba(255,255,255,0.5); /* 半透明の白 */
-            color: #007AFF;
+            background: transparent; color: #007AFF;
+            font-size: 14px; height: 40px; /* 少し高さを抑える */
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-section">
-            <img src="icon.png" class="hero-icon" alt="OtoLog">
-            <h1>OtoLog</h1>
-            <p class="subtitle">Sound Logging Experience</p>
-        </div>
-
-        <div class="bottom-section">
-            <a href="walkthrough.html" class="btn btn-primary">
-                使い方・研究背景を見る
-            </a>
-            <a href="download.html" class="btn btn-text">
-                スキップしてダウンロード
-            </a>
-        </div>
+    
+    <div class="top-content">
+        <img src="icon.png" class="hero-icon" alt="OtoLog">
+        <h1>OtoLog</h1>
+        <p class="subtitle">Sound Logging Experience</p>
     </div>
+
+    <div class="bottom-area">
+        <a href="walkthrough.html" class="btn btn-primary">
+            使い方・研究背景を見る
+        </a>
+        <a href="download.html" class="btn btn-text">
+            スキップしてダウンロード
+        </a>
+    </div>
+
 </body>
 </html>
