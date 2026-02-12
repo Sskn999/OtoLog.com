@@ -4,89 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Download OtoLog</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 共通デザイン定義 (index.htmlと同じ) --- */
-        :root { --primary: #007AFF; --text-main: #1d1d1f; --text-sub: #86868b; --bg: #ffffff; --radius: 16px; }
+        /* --- 共通設定 (index.htmlと同じ) --- */
         body {
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
-            margin: 0; padding: 0; height: 100dvh;
-            background-color: var(--bg); color: var(--text-main);
-            display: flex; justify-content: center; align-items: center;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif; margin: 0; padding: 0;
+            height: 100dvh; width: 100%; overflow: hidden;
+            background-image: url('bg.jpg');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            color: #1d1d1f; display: flex; flex-direction: column; align-items: center;
         }
+
         .container {
-            width: 100%; max-width: 340px; padding: 24px; text-align: center;
+            width: 100%; max-width: 400px; height: 100%;
+            padding: 0 24px; box-sizing: border-box;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        /* 要素のスタイル */
+        /* 上部エリア（index.htmlと完全に同じpadding-top） */
+        .header-section {
+            padding-top: 120px; 
+            text-align: center;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
         .icon-small {
-            width: 72px; height: 72px; border-radius: 18px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 16px; object-fit: cover;
+            width: 90px; height: 90px; border-radius: 22px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            margin-bottom: 24px; object-fit: cover;
         }
-        h1 { font-size: 24px; font-weight: 800; margin: 0 0 32px; }
+        h1 { font-size: 24px; font-weight: 800; margin: 0; }
 
-        /* IDカード (フラットなデザインに変更) */
-        .id-card {
-            background: #F5F5F7; /* 背景色を薄いグレーに */
-            border-radius: var(--radius);
-            padding: 24px;
-            margin-bottom: 32px;
+        /* 中央のIDカード（少しフロートさせる） */
+        .card-section {
+            width: 100%;
+            flex: 1; /* 余ったスペースを使う */
+            display: flex; align-items: center; justify-content: center;
         }
-        .id-label { font-size: 11px; font-weight: 700; color: var(--text-sub); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+
+        .id-card {
+            background: rgba(255, 255, 255, 0.85); /* 半透明の白 */
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px; width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .id-label { font-size: 11px; font-weight: 700; color: #86868b; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
         
         .id-value {
-            font-size: 42px; font-weight: 800; color: var(--primary); line-height: 1; letter-spacing: -1px;
-            cursor: pointer; transition: 0.1s;
+            font-size: 42px; font-weight: 800; color: #007AFF; line-height: 1; letter-spacing: -1px;
+            cursor: pointer;
         }
-        .id-value:active { transform: scale(0.96); opacity: 0.8; }
+        .id-value:active { opacity: 0.6; transform: scale(0.96); transition: 0.1s; }
         
-        .tap-hint { font-size: 11px; color: var(--text-sub); margin-top: 12px; display: flex; justify-content: center; gap: 4px; }
+        .tap-hint { font-size: 11px; color: #86868b; margin-top: 10px; }
 
-        /* ボタン */
+        /* 下部エリア */
+        .bottom-section {
+            padding-bottom: 50px; width: 100%;
+        }
+
         .btn {
-            display: flex; justify-content: center; align-items: center;
-            width: 100%; padding: 16px; border-radius: var(--radius);
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            width: 100%; height: 56px; border-radius: 16px;
             text-decoration: none; font-weight: 700; font-size: 15px;
-            transition: 0.1s; margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .btn:active { transform: scale(0.98); }
 
-        .btn-primary { background: var(--text-main); color: white; gap: 8px; }
-        .btn-text { background: transparent; color: var(--primary); font-size: 14px; }
-
+        .btn-primary { background: #1d1d1f; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-text { color: #007AFF; font-size: 14px; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); }
         .badge { background: #ff3b30; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-
-        /* トースト通知 */
+        
+        /* トースト */
         .toast {
-            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 30px;
-            font-size: 12px; opacity: 0; transition: 0.3s; pointer-events: none;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: rgba(0,0,0,0.8); color: white; padding: 8px 16px; border-radius: 30px;
+            font-size: 12px; font-weight: 600; opacity: 0; transition: 0.4s;
+            display: flex; align-items: center; gap: 6px; pointer-events: none;
         }
-        .toast.show { opacity: 1; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="icon.png" class="icon-small" alt="OtoLog">
-        <h1>Download OtoLog</h1>
-
-        <div class="id-card">
-            <div class="id-label">Your Group ID</div>
-            <div id="groupId" class="id-value" onclick="copyId()">...</div>
-            <div class="tap-hint">タップしてコピー</div>
+        <div class="header-section">
+            <img src="icon.png" class="icon-small" alt="OtoLog">
+            <h1>Download OtoLog</h1>
         </div>
 
-        <a href="https://testflight.apple.com/join/xxxxxx" class="btn btn-primary">
-            Download on iOS <span class="badge">26+</span>
-        </a>
+        <div class="card-section">
+            <div class="id-card">
+                <div class="id-label">Your Group ID</div>
+                <div id="groupId" class="id-value" onclick="copyId()">...</div>
+                <div class="tap-hint">タップしてコピー</div>
+            </div>
+        </div>
 
-        <a href="walkthrough.html" class="btn btn-text">
-            使い方をもう一度見る
-        </a>
+        <div class="bottom-section">
+            <a href="https://testflight.apple.com/join/xxxxxx" class="btn btn-primary">
+                Download on iOS <span class="badge">26+</span>
+            </a>
+            <a href="walkthrough.html" class="btn btn-text">
+                使い方をもう一度見る
+            </a>
+        </div>
     </div>
 
-    <div id="toast" class="toast">✓ コピーしました</div>
+    <div id="toast" class="toast">
+        <svg width="14" height="14" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+        コピーしました
+    </div>
 
     <script>
         // ★★★ GASのURLに書き換えてください ★★★
