@@ -6,117 +6,125 @@
     <title>Download OtoLog</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 共通設定 (index.htmlと同じ) --- */
+        @keyframes pageFadeIn {
+    0% { opacity: 0; transform: scale(0.98); filter: blur(10px); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif; margin: 0; padding: 0;
             height: 100dvh; width: 100%; overflow: hidden;
             background-image: url('bg.jpg');
             background-size: cover; background-position: center; background-repeat: no-repeat;
-            color: #1d1d1f; display: flex; flex-direction: column; align-items: center;
+            color: #1d1d1f; position: relative;
+            animation: pageFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        .container {
-            width: 100%; max-width: 400px; height: 100%;
-            padding: 0 24px; box-sizing: border-box;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-
-        /* 上部エリア（index.htmlと完全に同じpadding-top） */
-        .header-section {
-            padding-top: 120px; 
-            text-align: center;
+        .top-content {
+            position: absolute; top: 12%; width: 100%;
             display: flex; flex-direction: column; align-items: center;
         }
-
         .icon-small {
-            width: 90px; height: 90px; border-radius: 22px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            margin-bottom: 24px; object-fit: cover;
+            width: 70px; height: 70px; border-radius: 18px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px; object-fit: cover;
         }
         h1 { font-size: 24px; font-weight: 800; margin: 0; }
 
-        /* 中央のIDカード（少しフロートさせる） */
-        .card-section {
-            width: 100%;
-            flex: 1; /* 余ったスペースを使う */
-            display: flex; align-items: center; justify-content: center;
+        /* 中央カード */
+        .card-wrapper {
+            position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%);
+            width: 100%; max-width: 340px; padding: 0 24px; box-sizing: border-box;
         }
-
         .id-card {
-            background: rgba(255, 255, 255, 0.85); /* 半透明の白 */
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 30px; width: 100%;
-            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px); border-radius: 20px;
+            padding: 24px; text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
-
-        .id-label { font-size: 11px; font-weight: 700; color: #86868b; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
-        
+        .id-label { font-size: 10px; font-weight: 700; color: #86868b; margin-bottom: 8px; }
         .id-value {
-            font-size: 42px; font-weight: 800; color: #007AFF; line-height: 1; letter-spacing: -1px;
-            cursor: pointer;
+            font-size: 38px; font-weight: 800; color: #007AFF; margin-bottom: 4px; line-height: 1;
         }
-        .id-value:active { opacity: 0.6; transform: scale(0.96); transition: 0.1s; }
+        .copy-hint { font-size: 11px; color: #86868b; margin-bottom: 20px; display: block; }
+
+        /* 入力場所の説明図 */
+        .input-guide {
+            border-top: 1px dashed #ddd; padding-top: 15px; margin-top: 10px;
+        }
+        .guide-text { font-size: 11px; color: #333; margin-bottom: 8px; font-weight: bold; }
         
-        .tap-hint { font-size: 11px; color: #86868b; margin-top: 10px; }
-
-        /* 下部エリア */
-        .bottom-section {
-            padding-bottom: 50px; width: 100%;
+        /* CSSでログイン画面を再現 */
+        .mock-phone {
+            width: 140px; background: #E0F2F1; border-radius: 10px; padding: 12px 10px;
+            margin: 0 auto; display: flex; flex-direction: column; gap: 6px; position: relative;
         }
+        .mock-title { height: 8px; width: 60%; background: #00acc1; margin: 0 auto 4px; border-radius: 4px; opacity: 0.5; }
+        .mock-input { height: 16px; background: white; border-radius: 4px; border: 1px solid #ddd; }
+        .mock-input.target { border: 2px solid #007AFF; background: #eef6ff; } /* 強調 */
+        .pointer {
+            position: absolute; right: -25px; bottom: 15px; font-size: 24px;
+            animation: point 1s infinite alternate;
+        }
+        @keyframes point { from { transform: translateX(0); } to { transform: translateX(-5px); } }
 
+        /* ボタンエリア（index.htmlと位置合わせ） */
+        .bottom-area {
+            position: absolute; bottom: 40px; left: 0; width: 100%;
+            padding: 0 24px; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center;
+        }
         .btn {
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            width: 100%; height: 56px; border-radius: 16px;
+            display: flex; justify-content: center; align-items: center;
+            width: 100%; max-width: 400px; height: 54px; border-radius: 14px;
             text-decoration: none; font-weight: 700; font-size: 15px;
-            margin-bottom: 12px;
         }
-        .btn:active { transform: scale(0.98); }
-
-        .btn-primary { background: #1d1d1f; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .btn-text { color: #007AFF; font-size: 14px; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); }
-        .badge { background: #ff3b30; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .btn-primary { background: #1d1d1f; color: white; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-text { color: #007AFF; font-size: 13px; height: 40px; }
+        .badge { background: #ff3b30; font-size: 10px; padding: 2px 6px; border-radius: 4px; color: white; margin-left: 6px; }
         
         /* トースト */
         .toast {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
             background: rgba(0,0,0,0.8); color: white; padding: 8px 16px; border-radius: 30px;
-            font-size: 12px; font-weight: 600; opacity: 0; transition: 0.4s;
-            display: flex; align-items: center; gap: 6px; pointer-events: none;
+            font-size: 12px; opacity: 0; transition: 0.4s; pointer-events: none;
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
+    
 </head>
 <body>
-    <div class="container">
-        <div class="header-section">
-            <img src="icon.png" class="icon-small" alt="OtoLog">
-            <h1>Download OtoLog</h1>
-        </div>
 
-        <div class="card-section">
-            <div class="id-card">
-                <div class="id-label">Your Group ID</div>
-                <div id="groupId" class="id-value" onclick="copyId()">...</div>
-                <div class="tap-hint">タップしてコピー</div>
+    <div class="top-content">
+        <img src="icon.png" class="icon-small" alt="OtoLog">
+        <h1>Download</h1>
+    </div>
+
+    <div class="card-wrapper">
+        <div class="id-card">
+            <div class="id-label">Your Group ID</div>
+            <div id="groupId" class="id-value" onclick="copyId()">...</div>
+            <span class="copy-hint">タップしてコピー</span>
+
+            <div class="input-guide">
+                <div class="guide-text">アプリの2段目に入力してください</div>
+                <div class="mock-phone">
+                    <div class="mock-title"></div>
+                    <div class="mock-input"></div> <div class="mock-input target"></div> <div class="pointer">👈</div>
+                </div>
             </div>
         </div>
-
-        <div class="bottom-section">
-            <a href="https://testflight.apple.com/join/xxxxxx" class="btn btn-primary">
-                Download on iOS <span class="badge">26+</span>
-            </a>
-            <a href="walkthrough.html" class="btn btn-text">
-                使い方をもう一度見る
-            </a>
-        </div>
     </div>
 
-    <div id="toast" class="toast">
-        <svg width="14" height="14" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-        コピーしました
+    <div class="bottom-area">
+        <a href="https://testflight.apple.com/join/xxxxxx" class="btn btn-primary">
+            Download on iOS <span class="badge">26+</span>
+        </a>
+        <a href="walkthrough.html" class="btn btn-text">
+            使い方をもう一度見る
+        </a>
     </div>
+
+    <div id="toast" class="toast">コピーしました</div>
 
     <script>
         // ★★★ GASのURLに書き換えてください ★★★
