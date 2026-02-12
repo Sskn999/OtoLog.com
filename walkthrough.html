@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
     <style>
         @keyframes pageFadeIn {
-    0% { opacity: 0; transform: scale(0.98); filter: blur(10px); }
-    100% { opacity: 1; transform: scale(1); filter: blur(0); }
-}
+            0% { opacity: 0; transform: scale(0.98); filter: blur(10px); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0); }
+        }
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif; margin: 0; padding: 0;
             height: 100dvh; width: 100%; overflow: hidden;
@@ -25,25 +25,27 @@
 
         .slide {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* 上部の余白確保 */
-            padding: 100px 24px 160px; box-sizing: border-box;
+            /* 上部の余白を100px -> 80pxに減らし、全体を上に */
+            /* 下部の余白を160px -> 200pxに増やし、ボタン回避 */
+            padding: 80px 24px 200px; 
+            box-sizing: border-box;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s;
             opacity: 0; pointer-events: none;
         }
         .slide.active { opacity: 1; pointer-events: auto; }
 
-        /* 画像表示エリア（柔軟に対応） */
         .gallery {
             display: flex; justify-content: center; align-items: center; gap: 12px;
-            width: 100%; height: 320px; /* 画像エリアの高さを確保 */
+            /* 画像エリアの高さを320px -> 260pxに縮小 */
+            width: 100%; height: 260px; 
             margin-bottom: 24px;
         }
         
-        /* 画像のスタイル（縦長スクショ用） */
         .ui-img {
-            height: 100%; width: auto; /* 高さを基準に縮小 */
-            max-height: 300px; /* 画面からはみ出さない制限 */
+            height: 100%; width: auto;
+            /* 画像自体の最大高さを300px -> 240pxに制限 */
+            max-height: 240px; 
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             object-fit: contain;
@@ -51,12 +53,12 @@
 
         .step-label { color: #007AFF; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
         h2 { font-size: 24px; font-weight: 800; margin: 0 0 12px; text-align: center; }
-        p { font-size: 14px; line-height: 1.7; color: #555; margin: 0; text-align: center; max-width: 320px; }
+        /* 文字サイズを少し小さくして収まりよく */
+        p { font-size: 13px; line-height: 1.6; color: #555; margin: 0; text-align: center; max-width: 320px; }
 
-        /* 下部エリア（index.htmlと位置合わせ） */
         .bottom-area {
             position: absolute; 
-            bottom: 40px; /* index.htmlのbottom:50px + btn-textの高さ分などを考慮して調整 */
+            bottom: 40px; 
             left: 0; width: 100%;
             padding: 0 24px; box-sizing: border-box;
             display: flex; flex-direction: column; align-items: center;
@@ -68,11 +70,10 @@
 
         .btn {
             display: flex; justify-content: center; align-items: center;
-            width: 100%; max-width: 400px; height: 54px; border-radius: 14px;
+            width: 100%; max-width: 400px; height: 56px; border-radius: 14px;
             background: #1d1d1f; color: white;
             font-weight: 700; font-size: 15px; cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            /* index.htmlには下にテキストリンクがあるため、その分(40px+12px)だけマージンを取る */
             margin-bottom: 52px; 
         }
         .btn:active { transform: scale(0.98); }
