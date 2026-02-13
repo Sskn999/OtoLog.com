@@ -25,9 +25,8 @@
 
         .slide {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* 上部の余白を100px -> 80pxに減らし、全体を上に */
-            /* 下部の余白を160px -> 200pxに増やし、ボタン回避 */
-            padding: 80px 24px 200px; 
+            /* 上下の余白調整: 上は画面高さの12%、下はボタンエリア確保のために多めに */
+            padding: 12vh 24px 180px; 
             box-sizing: border-box;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s;
@@ -35,25 +34,44 @@
         }
         .slide.active { opacity: 1; pointer-events: auto; }
 
+        /* 画像エリア: 固定pxではなく画面高さ(vh)基準にして被りを防ぐ */
         .gallery {
             display: flex; justify-content: center; align-items: center; gap: 12px;
-            /* 画像エリアの高さを320px -> 260pxに縮小 */
-            width: 100%; height: 260px; 
-            margin-bottom: 24px;
+            width: 100%; 
+            height: 35vh; /* 画面の35%の高さを使う */
+            max-height: 350px; /* PCなどで大きくなりすぎないように制限 */
+            min-height: 200px; /* 小さくなりすぎないように */
+            margin-bottom: 16px;
+            position: relative; /* ガイドの基準位置 */
         }
         
         .ui-img {
             height: 100%; width: auto;
-            /* 画像自体の最大高さを300px -> 240pxに制限 */
-            max-height: 350px; 
+            max-height: 100%; /* 親要素(35vh)に収まるように */
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             object-fit: contain;
+            /* タップできることを示す */
+            cursor: zoom-in;
+            transition: transform 0.2s;
         }
+        .ui-img:active { transform: scale(0.96); }
 
-        .step-label { color: #007AFF; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+        /* タップ拡大ガイド（1枚目のみ表示） */
+        .tap-guide {
+            position: absolute;
+            bottom: -20px;
+            font-size: 10px; color: #86868b;
+            display: flex; align-items: center; gap: 4px;
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+        .step-label { color: #007AFF; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; margin-top: 10px; }
         h2 { font-size: 24px; font-weight: 800; margin: 0 0 12px; text-align: center; }
-        /* 文字サイズを少し小さくして収まりよく */
+        
+        /* 文章エリア */
         p { font-size: 13px; line-height: 1.6; color: #555; margin: 0; text-align: center; max-width: 320px; }
 
         .bottom-area {
@@ -62,6 +80,7 @@
             left: 0; width: 100%;
             padding: 0 24px; box-sizing: border-box;
             display: flex; flex-direction: column; align-items: center;
+            z-index: 10; /* スライドより手前に */
         }
 
         .dots { display: flex; gap: 8px; margin-bottom: 20px; }
@@ -77,6 +96,31 @@
             margin-bottom: 52px; 
         }
         .btn:active { transform: scale(0.98); }
+
+        /* --- 拡大表示用（ライトボックス） --- */
+        .lightbox-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.9); /* 白っぽい半透明背景 */
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox-overlay.show { opacity: 1; pointer-events: auto; }
+
+        .lightbox-img {
+            max-width: 90%; max-height: 80%;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .lightbox-overlay.show .lightbox-img { transform: scale(1); }
+
+        .close-hint {
+            position: absolute; bottom: 40px;
+            font-size: 12px; color: #86868b; font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -85,7 +129,11 @@
         
         <div class="slide active">
             <div class="gallery">
-                <img src="o7.png" class="ui-img"> 
+                <img src="o7.png" class="ui-img" onclick="openLightbox(this)"> 
+                <div class="tap-guide">
+                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3zM9 21l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6zM21 15l-2.3 2.3-2.87-2.89-1.42 1.42L17.3 18.7 15 21h6z"/></svg>
+                    タップして拡大
+                </div>
             </div>
             <div class="step-label">Concept</div>
             <h2>音でつながる、<br>新しい感性共有。</h2>
@@ -94,8 +142,12 @@
 
         <div class="slide">
             <div class="gallery">
-                <img src="o1.JPG" class="ui-img">
-                <img src="o2.PNG" class="ui-img">
+                <img src="o1.JPG" class="ui-img" onclick="openLightbox(this)">
+                <img src="o2.PNG" class="ui-img" onclick="openLightbox(this)">
+                <div class="tap-guide">
+                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3zM9 21l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6zM21 15l-2.3 2.3-2.87-2.89-1.42 1.42L17.3 18.7 15 21h6z"/></svg>
+                    タップして拡大
+                </div>
             </div>
             <div class="step-label">Step 1</div>
             <h2>日常を切り取る</h2>
@@ -104,8 +156,12 @@
 
         <div class="slide">
             <div class="gallery">
-                <img src="o3.PNG" class="ui-img">
-                <img src="o4.PNG" class="ui-img">
+                <img src="o3.PNG" class="ui-img" onclick="openLightbox(this)">
+                <img src="o4.PNG" class="ui-img" onclick="openLightbox(this)">
+                <div class="tap-guide">
+                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3zM9 21l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6zM21 15l-2.3 2.3-2.87-2.89-1.42 1.42L17.3 18.7 15 21h6z"/></svg>
+                    タップして拡大
+                </div>
             </div>
             <div class="step-label">Step 2</div>
             <h2>音だけで想像する</h2>
@@ -114,8 +170,12 @@
 
         <div class="slide">
             <div class="gallery">
-                <img src="o5.PNG" class="ui-img">
-                <img src="o6.PNG" class="ui-img">
+                <img src="o5.PNG" class="ui-img" onclick="openLightbox(this)">
+                <img src="o6.PNG" class="ui-img" onclick="openLightbox(this)">
+                <div class="tap-guide">
+                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3zM9 21l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6zM21 15l-2.3 2.3-2.87-2.89-1.42 1.42L17.3 18.7 15 21h6z"/></svg>
+                    タップして拡大
+                </div>
             </div>
             <div class="step-label">Step 3</div>
             <h2>ズレを楽しむ</h2>
@@ -130,6 +190,11 @@
         <div id="nextBtn" class="btn">次へ</div>
     </div>
 
+    <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" class="lightbox-img">
+        <div class="close-hint">閉じる</div>
+    </div>
+
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
@@ -137,6 +202,21 @@
         const nextBtn = document.getElementById('nextBtn');
         const totalSlides = slides.length;
 
+        // ライトボックス制御
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        function openLightbox(element) {
+            // クリックされた画像のsrcを取得してセット
+            lightboxImg.src = element.src;
+            lightbox.classList.add('show');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('show');
+        }
+
+        // スライダー制御
         nextBtn.addEventListener('click', () => {
             if (currentSlide < totalSlides - 1) {
                 currentSlide++;
