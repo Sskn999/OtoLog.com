@@ -1,105 +1,197 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Download OtoLog</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&family=Noto+Sans+JP:wght@500;700&display=swap"
+        rel="stylesheet">
+    <!-- 共通スタイルを読み込み -->
+    <link rel="stylesheet" href="style.css">
     <style>
-        @keyframes pageFadeIn {
-            0% { opacity: 0; transform: scale(0.98); filter: blur(10px); }
-            100% { opacity: 1; transform: scale(1); filter: blur(0); }
-        }
-        body {
-            font-family: 'Inter', 'Noto Sans JP', sans-serif; margin: 0; padding: 0;
-            height: 100dvh; width: 100%; overflow: hidden;
-            background-image: url('bg.jpg');
-            background-size: cover; background-position: center; background-repeat: no-repeat;
-            color: #1d1d1f; position: relative;
-            animation: pageFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-
+        /* ロゴ・タイトルエリア */
         .top-content {
-            position: absolute; 
-            /* 12% -> 8% に変更して少し上に */
-            top: 8%; 
+            position: absolute;
+            top: 8%;
             width: 100%;
-            display: flex; flex-direction: column; align-items: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .icon-small {
-            width: 70px; height: 70px; border-radius: 18px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            margin-bottom: 15px; object-fit: cover;
-        }
-        h1 { font-size: 24px; font-weight: 800; margin: 0; }
 
-        /* 中央カード */
-        .card-wrapper {
-            position: absolute; 
-            /* 48% -> 42% に変更してカード全体を上に逃がす */
-            top: 50%; 
-            left: 50%; transform: translate(-50%, -50%);
-            width: 100%; max-width: 340px; padding: 0 24px; box-sizing: border-box;
+        /* 小さめのアプリアイコン */
+        .icon-small {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            object-fit: cover;
         }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        /* 中央に表示するカードのラッパー */
+        .card-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 340px;
+            padding: 0 24px;
+            box-sizing: border-box;
+        }
+
+        /* グループIDを表示するカード */
         .id-card {
             background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px); border-radius: 20px;
-            padding: 20px; /* パディングを少し減らす */
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
-        .id-label { font-size: 10px; font-weight: 700; color: #86868b; margin-bottom: 8px; }
-        .id-value {
-            font-size: 34px; /* 文字サイズを少し縮小 */
-            font-weight: 800; color: #007AFF; margin-bottom: 4px; line-height: 1;
-        }
-        .copy-hint { font-size: 11px; color: #86868b; margin-bottom: 15px; display: block; }
 
+        .id-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #86868b;
+            margin-bottom: 8px;
+        }
+
+        .id-value {
+            font-size: 34px;
+            font-weight: 800;
+            color: #007AFF;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+        .copy-hint {
+            font-size: 11px;
+            color: #86868b;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* アプリへの入力ガイドエリア */
         .input-guide {
-            border-top: 1px dashed #ddd; padding-top: 10px; margin-top: 5px;
+            border-top: 1px dashed #ddd;
+            padding-top: 10px;
+            margin-top: 5px;
         }
-        .guide-text { font-size: 11px; color: #333; margin-bottom: 5px; font-weight: bold; }
-        
+
+        .guide-text {
+            font-size: 11px;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* アプリ画面のモックアップ */
         .mock-phone {
-            width: 140px; background: #E0F2F1; border-radius: 10px; padding: 8px 10px;
-            margin: 0 auto; display: flex; flex-direction: column; gap: 5px; position: relative;
+            width: 140px;
+            background: #E0F2F1;
+            border-radius: 10px;
+            padding: 8px 10px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            position: relative;
         }
-        .mock-title { height: 6px; width: 60%; background: #00acc1; margin: 0 auto 2px; border-radius: 4px; opacity: 0.5; }
-        .mock-input { height: 14px; background: white; border-radius: 4px; border: 1px solid #ddd; }
-        .mock-input.target { border: 2px solid #007AFF; background: #eef6ff; }
+
+        .mock-title {
+            height: 6px;
+            width: 60%;
+            background: #00acc1;
+            margin: 0 auto 2px;
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        .mock-input {
+            height: 14px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        /* 入力対象フィールドのハイライト */
+        .mock-input.target {
+            border: 2px solid #007AFF;
+            background: #eef6ff;
+        }
+
+        /* 入力先を指すアニメーション付き矢印 */
         .pointer {
-            position: absolute; right: -25px; bottom: 10px; font-size: 20px;
+            position: absolute;
+            right: -25px;
+            bottom: 10px;
+            font-size: 20px;
             animation: point 1s infinite alternate;
         }
-        @keyframes point { from { transform: translateX(0); } to { transform: translateX(-5px); } }
 
-        .bottom-area {
-            position: absolute; bottom: 40px; left: 0; width: 100%;
-            padding: 0 24px; box-sizing: border-box;
-            display: flex; flex-direction: column; align-items: center;
+        @keyframes point {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-5px);
+            }
         }
-        .btn {
-            display: flex; justify-content: center; align-items: center;
-            width: 100%; max-width: 400px; height: 54px; border-radius: 14px;
-            text-decoration: none; font-weight: 700; font-size: 15px;
+
+        /* バッジ（OS制限表示など） */
+        .badge {
+            background: #ff3b30;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: white;
+            margin-left: 6px;
         }
-        .btn-primary { background: #1d1d1f; color: white; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .btn-text { color: #007AFF; font-size: 13px; height: 40px; }
-        .badge { background: #ff3b30; font-size: 10px; padding: 2px 6px; border-radius: 4px; color: white; margin-left: 6px; }
-        
+
+        /* コピー完了トースト通知 */
         .toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
-            background: rgba(0,0,0,0.8); color: white; padding: 8px 16px; border-radius: 30px;
-            font-size: 12px; opacity: 0; transition: 0.4s; pointer-events: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            opacity: 0;
+            transition: 0.4s;
+            pointer-events: none;
         }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* FULL・エラー時のIDテキスト色 */
+        .id-value.error {
+            color: #FF3B30;
+            font-size: 24px;
+        }
     </style>
-    
 </head>
+
 <body>
 
     <div class="top-content">
-        <img src="icon.png" class="icon-small" alt="OtoLog">
+        <img src="icon.png" class="icon-small" alt="OtoLog アプリアイコン">
         <h1>Download</h1>
     </div>
 
@@ -107,20 +199,22 @@
         <div class="id-card">
             <div class="id-label">Your Group ID</div>
             <div id="groupId" class="id-value" onclick="copyId()">...</div>
-            <span class="copy-hint">タップしてコピー</span>
+            <span class="copy-hint" id="copyHint">タップしてコピー</span>
 
             <div class="input-guide">
                 <div class="guide-text">アプリの2段目に入力してください</div>
                 <div class="mock-phone">
                     <div class="mock-title"></div>
-                    <div class="mock-input"></div> <div class="mock-input target"></div> <div class="pointer">👈</div>
+                    <div class="mock-input"></div>
+                    <div class="mock-input target"></div>
+                    <div class="pointer">👈</div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="bottom-area">
-        <a href="https://testflight.apple.com/join/ZnBbsWNj" class="btn btn-primary">
+        <a id="downloadBtn" href="https://testflight.apple.com/join/ZnBbsWNj" class="btn btn-primary">
             Download on iOS <span class="badge">26+</span>
         </a>
         <a href="walkthrough.html" class="btn btn-text">
@@ -133,28 +227,80 @@
     <script>
         // ★★★ GASのURLに書き換えてください ★★★
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwaRek10Td3Z25Rfr2k6CDZ86sdtC4m5CKbDzr-59SjhJf2rpFOGyjp_Nz4xGA-GeZnPw/exec";
-        
+
         let currentId = "";
+
+        /**
+         * 満員または取得不可の場合にダウンロードボタンを無効化する
+         * @param {string} message - ボタンに表示するテキスト
+         */
+        function disableDownloadButton(message) {
+            const btn = document.getElementById('downloadBtn');
+            btn.className = 'btn btn-disabled';
+            btn.textContent = message;
+            btn.removeAttribute('href');
+        }
+
+        /**
+         * GASからグループIDを取得してUIに反映する
+         */
         async function fetchId() {
             const display = document.getElementById('groupId');
+            const hint = document.getElementById('copyHint');
+
+            // ローカルキャッシュがあれば再取得しない
             const saved = localStorage.getItem('otolog_id');
-            if (saved) { currentId = saved; display.innerText = saved; return; }
+            if (saved) {
+                currentId = saved;
+                display.innerText = saved;
+                return;
+            }
+
             try {
                 const res = await fetch(SCRIPT_URL);
                 const data = await res.json();
-                if (data.group === "FULL") { display.innerText = "FULL"; }
-                else { currentId = data.group; display.innerText = currentId; localStorage.setItem('otolog_id', currentId); }
-            } catch (e) { display.innerText = "ERR"; }
+
+                if (data.group === "FULL") {
+                    // 満員の場合：IDを表示せずボタンを無効化
+                    display.classList.add('error');
+                    display.innerText = "満員";
+                    hint.style.display = 'none';
+                    disableDownloadButton("現在は満員です");
+                } else if (data.group === "ERROR") {
+                    // エラーの場合：取得失敗を通知してボタンを無効化
+                    display.classList.add('error');
+                    display.innerText = "取得失敗";
+                    hint.style.display = 'none';
+                    disableDownloadButton("再読み込みしてください");
+                } else {
+                    // 正常取得：IDを表示してキャッシュに保存
+                    currentId = data.group;
+                    display.innerText = currentId;
+                    localStorage.setItem('otolog_id', currentId);
+                }
+            } catch (e) {
+                // ネットワークエラー
+                display.classList.add('error');
+                display.innerText = "通信エラー";
+                hint.style.display = 'none';
+                disableDownloadButton("再読み込みしてください");
+            }
         }
+
+        /**
+         * グループIDをクリップボードにコピーし、トースト通知を表示する
+         */
         function copyId() {
-            if(!currentId) return;
+            if (!currentId) return;
             navigator.clipboard.writeText(currentId).then(() => {
                 const t = document.getElementById('toast');
                 t.classList.add('show');
                 setTimeout(() => t.classList.remove('show'), 2000);
             });
         }
+
         window.onload = fetchId;
     </script>
 </body>
+
 </html>
