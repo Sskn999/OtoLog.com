@@ -36,6 +36,9 @@
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s;
             opacity: 0;
             pointer-events: none;
+            /* 背景パターンとスクリーンショットの競合を緩和する半透明オーバーレイ */
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
         }
 
         /* アクティブなスライドだけ表示・操作可 */
