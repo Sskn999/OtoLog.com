@@ -1,0 +1,103 @@
+/* ===========================================
+   OtoLog-NFC 共通スタイルシート
+   =========================================== */
+
+/* ページ読み込みフェードインアニメーション */
+@keyframes pageFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.98);
+        filter: blur(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+/* ボディ共通スタイル（全ページ共通） */
+body {
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    background-image: url('bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #1d1d1f;
+    position: relative;
+    animation: pageFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* 下部ボタンエリア */
+.bottom-area {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    padding: 0 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* =====================
+   ボタン共通スタイル
+   ===================== */
+
+/* ベースボタン */
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    height: 56px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.1s;
+    box-sizing: border-box;
+    border: none;
+    /* iOS でのタップ時のハイライトを除去 */
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* タップ時の押し込みフィードバック（全ボタン共通） */
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* プライマリボタン（黒背景・白テキスト） */
+.btn-primary {
+    background: #1d1d1f;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 12px;
+}
+
+/* テキストボタン（透明背景・青テキスト） */
+.btn-text {
+    background: transparent;
+    color: #007AFF;
+    font-size: 14px;
+    height: 40px;
+}
+
+/* ボタン無効化状態（FULL / ERR 時など） */
+.btn-disabled {
+    background: #c7c7cc !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    cursor: not-allowed;
+    pointer-events: none;
+    margin-bottom: 12px;
+}
