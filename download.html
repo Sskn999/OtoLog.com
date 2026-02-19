@@ -40,7 +40,8 @@
         /* 中央に表示するカードのラッパー */
         .card-wrapper {
             position: absolute;
-            top: 50%;
+            /* ページ上部とボタンの中間に来るようにカードを少し上もに移動 */
+            top: 42%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
@@ -180,6 +181,16 @@
             opacity: 1;
         }
 
+        /* ローディング中のボタン状態 */
+        .btn-loading {
+            background: #8e8e93;
+            color: white;
+            box-shadow: none;
+            pointer-events: none;
+            cursor: not-allowed;
+            margin-bottom: 12px;
+        }
+
         /* FULL・エラー時のIDテキスト色 */
         .id-value.error {
             color: #FF3B30;
@@ -214,8 +225,9 @@
     </div>
 
     <div class="bottom-area">
-        <a id="downloadBtn" href="https://testflight.apple.com/join/ZnBbsWNj" class="btn btn-primary">
-            Download on iOS <span class="badge">26+</span>
+        <!-- 初期状態：グループID取得完了まで無効化 -->
+        <a id="downloadBtn" class="btn btn-loading">
+            ID取得中…
         </a>
         <a href="walkthrough.html" class="btn btn-text">
             使い方をもう一度見る
@@ -242,6 +254,16 @@
         }
 
         /**
+         * ID取得成功後にダウンロードボタンを有効化する
+         */
+        function enableDownloadButton() {
+            const btn = document.getElementById('downloadBtn');
+            btn.className = 'btn btn-primary';
+            btn.href = 'https://testflight.apple.com/join/ZnBbsWNj';
+            btn.innerHTML = 'Download on iOS <span class="badge">26+</span>';
+        }
+
+        /**
          * GASからグループIDを取得してUIに反映する
          */
         async function fetchId() {
@@ -253,6 +275,7 @@
             if (saved) {
                 currentId = saved;
                 display.innerText = saved;
+                enableDownloadButton();
                 return;
             }
 
@@ -277,6 +300,7 @@
                     currentId = data.group;
                     display.innerText = currentId;
                     localStorage.setItem('otolog_id', currentId);
+                    enableDownloadButton();
                 }
             } catch (e) {
                 // ネットワークエラー
